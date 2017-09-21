@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours*60*60+minutes*60+seconds
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = 60*(hours*60+minutes)+seconds
 
 /**
  * Тривиальная
@@ -64,7 +64,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
     val sagenesDL = (sagenes*48*4.445)
     val arshinsDL = (arshins*16*4.445)
     val vershoksDL = vershoks*4.445
-    val res:Double = (sagenesDL+arshinsDL+vershoksDL)/100
+    val res = (sagenesDL+arshinsDL+vershoksDL)/100
     return res
 
 }
@@ -77,8 +77,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
     val res1= grad+min/60.0+sec/(60.0*60.0)
-    val res:Double = res1*0.0174533
-    return res
+    return res1* PI/180
 }
 
 /**
