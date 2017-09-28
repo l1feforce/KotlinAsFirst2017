@@ -77,10 +77,14 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
+    val rook1X = rookX1 == kingX
+    val rook1Y = rookY1 == kingY
+    val rook2X = rookX2 == kingX
+    val rook2Y = rookY2 == kingY
     when {
-        ((rookX1 == kingX) || (rookY1 == kingY)) && ((rookX2 == kingX) || (rookY2 == kingY)) -> return 3
-        ((rookX1 == kingX) || (rookY1 == kingY)) -> return 1
-        ((rookX2 == kingX) || (rookY2 == kingY)) -> return 2
+        (rook1X || rook1Y) && (rook2X || rook2Y) -> return 3
+        rook1X || rook1Y -> return 1
+        rook2X || rook2Y -> return 2
         else -> return 0
     }
 }
@@ -116,11 +120,14 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     var cos = 0.0
+    val sqrB = b*b
+    val sqrA = a*a
+    val sqrC = c*c
     if ((a + b > c) && (a + c > b) && (b + c > a)) {
         when {
-            maxOf(a, b, c) == a -> cos = (b * b + c * c - a * a) / (2 * b * c)
-            maxOf(a, b, c) == b -> cos = (c * c + a * a - b * b) / (2 * a * c)
-            else -> cos = (a * a + b * b - c * c) / (2 * a * b)
+            maxOf(a, b, c) == a -> cos = (sqrB + sqrC - sqrA) / (2 * b * c)
+            maxOf(a, b, c) == b -> cos = (sqrC + sqrA - sqrB) / (2 * a * c)
+            else -> cos = (sqrA + sqrB - sqrC) / (2 * a * b)
         }
         if (cos > 0) return 0 else if (cos < 0) return 2 else return 1
     } else return -1

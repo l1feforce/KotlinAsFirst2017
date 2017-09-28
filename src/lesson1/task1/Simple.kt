@@ -61,8 +61,8 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = 60*(hours*60+minutes)
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val sagenesDL = (sagenes*48*4.445)
-    val arshinsDL = (arshins*16*4.445)
+    val sagenesDL = sagenes*48*4.445
+    val arshinsDL = arshins*16*4.445
     val vershoksDL = vershoks*4.445
     val res = (sagenesDL+arshinsDL+vershoksDL)/100
     return res
@@ -121,7 +121,10 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double = (initial*(1+percent/100.0)*(1+percent/100.0)*(1+percent/100.0))
+fun accountInThreeYears(initial: Int, percent: Int): Double {
+    val per = 1 + percent / 100.0
+    return initial * pow(per, 3.0)
+}
 
 /**
  * Простая
@@ -129,4 +132,4 @@ fun accountInThreeYears(initial: Int, percent: Int): Double = (initial*(1+percen
  * Пользователь задает целое трехзначное число (например, 478).
  *Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = (number/100)+((number/10)%10)*10+(number%10)*100
+fun numberRevert(number: Int): Int = number/100+(number/10%10)*10+(number%10)*100
