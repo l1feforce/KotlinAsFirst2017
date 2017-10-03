@@ -261,6 +261,16 @@ fun hasDifferentDigits(n: Int): Boolean {
     return false
 }
 
+fun numberLength(n: Int):Int {
+   var num = n
+    var t = 0
+    while (num>0) {
+        t+=1
+        num/=10
+    }
+    return t
+}
+
 /**
  * Сложная
  *
@@ -274,13 +284,8 @@ fun squareSequenceDigit(n: Int): Int {
     var t = 0
     while (k<n) {
         num+=1
-        t = 0
         var numSqr = num*num
-        while (numSqr>0) {
-            t+=1
-            numSqr/=10
-        }
-        k+=t
+        k+= numberLength(numSqr)
     }
     var numSqr = num*num
     if (k==n) return numSqr%10 else
@@ -304,11 +309,7 @@ fun fibSequenceDigit(n: Int): Int {
         num+=1
         t = 0
         var numFib = fib(num)
-        while (numFib>0) {
-            t+=1
-            numFib/=10
-        }
-        k+=t
+        k+= numberLength(numFib)
     }
     var numFib = fib(num)
     if (k==n) return numFib%10 else

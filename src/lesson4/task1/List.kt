@@ -237,19 +237,26 @@ fun factorize(n: Int): List<Int> {
  */
 fun factorizeToString(n: Int): String {
     var number = n
+    var i = 1
     var k = 0
-    var list: String? = null.toString()
+    var list = ""
     while (number!=1)
     {
-        for (i in 2..number)
-        {
+        i+=1
             if (number%i==0) {
             number/=i
-                list
-            }
+                k+=1
+                if (k==1) {
+                    list += "$i"
+                    i = 2
+                }
+                else {
+                    list += "*$i"
+                    i = 2
+                }
             }
         }
-return "0"
+return list
 }
 
 /**
