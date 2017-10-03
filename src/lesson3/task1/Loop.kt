@@ -66,7 +66,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var k = 1
     var num = n
-    while (num>9) {
+    while (abs(num)>9) {
         k+=1
         num/=10
     }
@@ -79,7 +79,20 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = if (n<3) 1 else fib(n-1)+fib(n-2)
+fun fib(n: Int): Int {
+    if (n<3) return 1
+    var a1 = 1
+    var a2 = 1
+    var a3 = 0
+    var k = 0
+    for (i in 3..n)
+    {
+        a3=a1+a2
+        a1 = a2
+        a2 = a3
+    }
+    return a3
+}
 
 /**
  * Простая
@@ -143,7 +156,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean { //если в промежутке sqrt(m)..sqrt(n) есть целое число, то есть и квадрат в соот-ем промежутке
-    return sqrt(n.toDouble()).toInt()-sqrt(m.toDouble()).toInt()>=1||sqrt(n.toDouble())==sqrt(m.toDouble())
+    val n1: Double = n.toDouble()
+    val m1: Double = m.toDouble()
+    return ceil(sqrt(n1))-ceil(sqrt(m1))>=1||(sqrt(n1)==sqrt(m1)&&sqrt(n1)==ceil(sqrt(n1)))
 }
 
 /**
@@ -209,19 +224,13 @@ fun cos(x: Double, eps: Double): Double {
  */
 fun revert(n: Int): Int {
     var num = n
-    var k =0
-    while (num>0) {
-        k+=1
+    var k = 0
+    while (num>0)
+    {
+        k = k * 10 + num%10
         num/=10
     }
-    num = n
-    var num1 = 0
-       for (i in 1..k) {
-        num1 +=  (num%10*pow(10.0, (k-1).toDouble())).toInt()
-        num/=10
-        k-=1
-    }
-    return num1
+    return k
 }
 
 /**
@@ -232,25 +241,7 @@ fun revert(n: Int): Int {
  * 15751 -- палиндром, 3653 -- нет.
  */
 fun isPalindrome(n: Int): Boolean {
-    if (n/10==0) return true
-    var num = n
-    var k =0
-    while (num>0) {
-        k+=1
-        num/=10
-    }
-    num = n
-    if (k%2==0) {
-       var rightP = (num%pow(10.0, (k/2).toDouble())).toInt()
-        var leftP = (num/pow(10.0, (k/2).toDouble())).toInt()
-        return (rightP== revert(leftP))
-    }
-    else {
-       var rightP = (num%pow(10.0, ((k-1)/2).toDouble())).toInt()
-       var leftP = (num/pow(10.0, ((k+1)/2).toDouble())).toInt()
-    return (rightP== revert(leftP))
-    }
-
+    return n==revert(n)
 }
 
 /**
