@@ -2,6 +2,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import java.lang.Math.pow
 import java.lang.Math.sqrt
 
 /**
@@ -266,7 +267,17 @@ return list
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var list = listOf<Int>()
+    var number = n
+    while (number>=base)
+    {
+        list += number%base
+        number/=base
+    }
+    list += number
+    return list.asReversed()
+}
 
 /**
  * Сложная
@@ -276,7 +287,29 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var number = n
+    var list = ""
+    if (number<base) {
+        if (number >= 10) {
+            list += (number + 87).toChar()
+            return list
+        } else {
+            list += number
+            return list
+        }
+    }
+    while (number >= base)
+    {
+        if (number%base>=10) list += (number%base+87).toChar()
+        else list += number%base
+        number /= base
+    }
+    if (number>=10) list += (number + 87).toChar()
+    else
+    list += number
+    return list.reversed()
+}
 
 /**
  * Средняя
@@ -285,7 +318,14 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var sum = 0.0
+    for (i in (digits.size-1) downTo 0)
+    {
+       sum += digits[i]* pow(base.toDouble(),(digits.size-1-i).toDouble())
+    }
+    return sum.toInt()
+}
 
 /**
  * Сложная
