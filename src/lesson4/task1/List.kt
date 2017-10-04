@@ -336,7 +336,21 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var sum= 0.0
+    for (i in 0..(str.length-1))
+    {
+        if (str[i].toInt()<58)
+        {
+           sum += (str[i].toInt()-48)*pow(base.toDouble(),(str.length-1-i).toDouble())
+        }
+        else
+        {
+           sum += (str[i].toInt()-87)*pow(base.toDouble(),(str.length-1-i).toDouble())
+        }
+    }
+    return sum.toInt()
+}
 
 /**
  * Сложная
