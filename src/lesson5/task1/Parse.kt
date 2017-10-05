@@ -66,7 +66,30 @@ fun main(args: Array<String>) {
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateStrToDigit(str: String): String =TODO()
+fun dateStrToDigit(str: String): String {
+    val list = str.split(" ")
+    if (list.size!=3) return ""
+    val t = list[1]
+    val k = list[0].toInt()
+    var str1 = String.format("%02d",k)+"."
+    when{
+        t=="января" -> str1 += "01"
+        t=="февраля" -> str1 += "02"
+        t=="марта" -> str1 += "03"
+        t=="апреля" -> str1 += "04"
+        t=="мая" -> str1+= "05"
+        t=="июня" -> str1+="06"
+        t=="июля" -> str1+="07"
+        t=="августа" -> str1+="08"
+        t=="сентября" -> str1+="09"
+        t=="октября" -> str1+="10"
+        t=="ноября" -> str1+="11"
+        t=="декабря" -> str1+="12"
+        else -> return ""
+    }
+    str1+="."+list[2]
+    return str1
+}
 
 /**
  * Средняя
@@ -75,7 +98,34 @@ fun dateStrToDigit(str: String): String =TODO()
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val list = digital.split(".")
+    if (list.size!=3) return ""
+    val t = list[1]
+   try {
+       val k = list[0].toInt() % 100
+       var str1 = k.toString() + " "
+       when {
+           t == "01" -> str1 += "января"
+           t == "02" -> str1 += "февраля"
+           t == "03" -> str1 += "марта"
+           t == "04" -> str1 += "апреля"
+           t == "05" -> str1 += "мая"
+           t == "06" -> str1 += "июня"
+           t == "07" -> str1 += "июля"
+           t == "08" -> str1 += "августа"
+           t == "09" -> str1 += "сентября"
+           t == "10" -> str1 += "октября"
+           t == "11" -> str1 += "ноября"
+           t == "12" -> str1 += "декабря"
+           else -> return ""
+       }
+       str1 += " " + list[2]
+       return str1
+   }
+   catch (e: NumberFormatException)
+   {return ""}
+}
 
 /**
  * Средняя
