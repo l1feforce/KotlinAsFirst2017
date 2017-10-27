@@ -378,7 +378,7 @@ fun russian(n: Int): String {
             val n1 = n21%10
             val k3 = list[n3]
             val k2 = list[n2]
-            val k1 = list[n21 % 10]
+            val k1 =" " + list[n21 % 10]
             val k11 = list1[n21 % 10]
             when {
                 n3 == 0 -> str += ""
@@ -400,10 +400,10 @@ fun russian(n: Int): String {
                 n21 == 18 -> str += "восемнадцать"
                 n21 == 19 -> str += "девятнадцать"
                 n21 == 10 -> str += "десять"
-                n2 in 2..3 -> str += "$k2" + "дцать " + k1
-                n2 == 4 -> str += "сорок " + k1
-                n2 in 5..8 -> str += "$k2" + "десят " + k1
-                n2 == 9 -> str += "девяносто " + k1
+                n2 in 2..3 -> str += "$k2" + "дцать" + k1
+                n2 == 4 -> str += "сорок" + k1
+                n2 in 5..8 -> str += "$k2" + "десят" + k1
+                n2 == 9 -> str += "девяносто" + k1
                 else -> str += k1
             }
         }
