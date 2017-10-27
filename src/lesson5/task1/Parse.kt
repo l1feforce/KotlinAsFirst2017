@@ -70,25 +70,29 @@ fun dateStrToDigit(str: String): String {
     val list = str.split(" ")
     if (list.size!=3) return ""
     val t = list[1]
-    val k = list[0].toInt()
-    var str1 = String.format("%02d",k)+"."
-    when{
-        t=="января" -> str1 += "01"
-        t=="февраля" -> str1 += "02"
-        t=="марта" -> str1 += "03"
-        t=="апреля" -> str1 += "04"
-        t=="мая" -> str1+= "05"
-        t=="июня" -> str1+="06"
-        t=="июля" -> str1+="07"
-        t=="августа" -> str1+="08"
-        t=="сентября" -> str1+="09"
-        t=="октября" -> str1+="10"
-        t=="ноября" -> str1+="11"
-        t=="декабря" -> str1+="12"
-        else -> return ""
+    try {
+        val k = list[0].toInt()
+        var str1 = String.format("%02d", k) + "."
+        when {
+            t == "января" -> str1 += "01"
+            t == "февраля" -> str1 += "02"
+            t == "марта" -> str1 += "03"
+            t == "апреля" -> str1 += "04"
+            t == "мая" -> str1 += "05"
+            t == "июня" -> str1 += "06"
+            t == "июля" -> str1 += "07"
+            t == "августа" -> str1 += "08"
+            t == "сентября" -> str1 += "09"
+            t == "октября" -> str1 += "10"
+            t == "ноября" -> str1 += "11"
+            t == "декабря" -> str1 += "12"
+            else -> return ""
+        }
+        str1 += "." + list[2]
+        return str1
     }
-    str1+="."+list[2]
-    return str1
+    catch (e: NumberFormatException)
+    {return ""}
 }
 
 /**
@@ -139,7 +143,10 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var list = phone.split("d")
+return "0"
+}
 
 /**
  * Средняя

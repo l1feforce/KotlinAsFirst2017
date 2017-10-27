@@ -138,7 +138,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     else
     {
         val mid = mean(list)
-        for (i in 0..(list.size-1))
+        for (i in 0 until list.size)
         {
             list[i]-=mid
         }
@@ -170,16 +170,10 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    if (p.isEmpty()) return 0.0
-    var part = x
-    var sum = p[0]
-    for (i in 1..(p.size-1))
-    {
-      sum+=p[i]*part
-        part*=x
-    }
-    return sum
+    return p.foldIndexed(0.0)
+    { index, previousResult, element -> previousResult + element * pow(x, index.toDouble()) }
 }
+
 
 /**
  * Средняя
@@ -192,14 +186,17 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty()||list.size==1) return list
-    var sum = list[0]+list[1]
-    var listCopy  = list
-    for (i in 1..(list.size-1))
+    if (list.isEmpty() || list.size == 1) return list
+    var index = 0
+    var sum = -list[1]
+   var listCopy = list.map {
+        sum+=list[(Math.abs(index-1))]
+        index++
+        it+sum
+    }
+    for (i in 0 until list.size)
     {
-        list[i] =sum
-        if (i==(list.size-1)) break
-        sum+=listCopy[i+1]
+        list[i] = listCopy[i]
     }
     return list
 }
@@ -371,8 +368,8 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
     var str = ""
-    val list = listOf("ноль","один","два","три","четыре","пять","шесть","семь","восемь","девять")
-    val list1 = listOf("ноль","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
+    val list = listOf("","один","два","три","четыре","пять","шесть","семь","восемь","девять")
+    val list1 = listOf("","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
     val part = listOf(n/1000,n%1000)
     for (i in 0..1) {
             val n3 = part[i] / 100
@@ -407,7 +404,7 @@ fun russian(n: Int): String {
                 n2 == 4 -> str += "сорок " + k1
                 n2 in 5..8 -> str += "$k2" + "десят " + k1
                 n2 == 9 -> str += "девяносто " + k1
-                else -> if (k1 == "ноль") str += "" else str += k1
+                else -> str += k1
             }
         }
         if (i==0&&part[i]!=0)
@@ -427,7 +424,7 @@ fun russian(n: Int): String {
                 n2 == 4 -> str += "сорок " + k11
                 n2 in 5..8 -> str += "$k2" + "десят " + k11
                 n2 == 9 -> str += "девяносто " + k11
-                else -> if (k1=="ноль") str+="" else str += k11
+                else -> str += k11
             }
             when {
                 n21 in 5..20 -> str+="тысяч"

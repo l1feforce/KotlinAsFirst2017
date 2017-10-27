@@ -64,13 +64,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    var k = 1
+    var counter = 1
     var num = n
     while (abs(num)>9) {
-        k+=1
+        counter+=1
         num/=10
     }
-    return k
+    return counter
 }
 
 /**
@@ -156,9 +156,10 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean { //если в промежутке sqrt(m)..sqrt(n) есть целое число, то есть и квадрат в соот-ем промежутке
-    val n1: Double = n.toDouble()
-    val m1: Double = m.toDouble()
-    return ceil(sqrt(n1))-ceil(sqrt(m1))>=1||(sqrt(n1)==sqrt(m1)&&sqrt(n1)==ceil(sqrt(n1)))
+    val n1 = n.toDouble()
+    val m1 = m.toDouble()
+    return ceil(sqrt(n1))-ceil(sqrt(m1))>=1 ||
+            (sqrt(n1)==sqrt(m1)&&sqrt(n1)==ceil(sqrt(n1)))
 }
 
 /**
@@ -169,7 +170,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean { //если в промежу�
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var fac = 2*3
+    var factorial = 2*3
     var k = -1
     var part = x%(2* PI)
     var t = 3
@@ -177,40 +178,39 @@ fun sin(x: Double, eps: Double): Double {
     var sum = part
     while (part>=abs(eps))
     {
-        part = k*(i/fac)
+        part = k*(i/factorial)
         if (part<abs(eps)) break
         sum+=part
         k*=-1
         i*=part*part
         t+=1
-        fac*=t*(t+1)
+        factorial*=t*(t+1)
     }
     return sin(sum)
 }
+    /**
+     * Средняя
+     *
+     * Для заданного x рассчитать с заданной точностью eps
+     * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
+     * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
+     */
 
-/**
- * Средняя
- *
- * Для заданного x рассчитать с заданной точностью eps
- * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
- * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
- */
 fun cos(x: Double, eps: Double): Double {
-    var fac = 2
-    var k = -1
-    var part = x%(2* PI)
-    var t = 2
-    var i = part*part
+    var sign = -1
+        val arg = x % (2* PI)
+    var part = x % 2 * PI
+    var factorialCount = 2
+    var argDegree = arg*arg
     var sum = 1.0
     while (part>=abs(eps))
     {
-        part = k*(i/fac)
+        part = sign*(argDegree/factorial(factorialCount))
         if (part<abs(eps)) break
         sum+=part
-        k*=-1
-        i*=part*part
-        t+=1
-        fac*=t*(t+1)
+        sign*=-1
+        argDegree*=arg*arg
+        factorialCount+=2
     }
     return cos(sum)
 }
@@ -281,7 +281,6 @@ fun numberLength(n: Int):Int {
 fun squareSequenceDigit(n: Int): Int {
     var k = 0
     var num = 0
-    var t = 0
     while (k<n) {
         num+=1
         var numSqr = num*num
@@ -304,10 +303,8 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var k = 0
     var num = 0
-    var t = 0
     while (k<n) {
         num+=1
-        t = 0
         var numFib = fib(num)
         k+= numberLength(numFib)
     }

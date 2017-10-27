@@ -102,14 +102,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    val rkX = rookX == kingX
-    val rkY = rookY==kingY
-    val bkXY = abs(bishopX - kingX) == abs(bishopY - kingY)
+    val isThreatenedByRookX = rookX == kingX
+    val isThreatenedByRookY = rookY==kingY
+    val isThreatenedByBishop = abs(bishopX - kingX) == abs(bishopY - kingY)
 
     when {
-        (rkX || rkY) && (bkXY) -> return 3
-        (bkXY) -> return 2
-        rkX || rkY -> return 1
+        (isThreatenedByRookX || isThreatenedByRookY) && (isThreatenedByBishop) -> return 3
+        isThreatenedByBishop -> return 2
+        isThreatenedByRookX || isThreatenedByRookY -> return 1
         else -> return 0
     }
 }
