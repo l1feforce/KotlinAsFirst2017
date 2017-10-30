@@ -367,7 +367,7 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var string = ""
+    var string = "" 
     val listOfBit1 = listOf("","один","два","три","четыре","пять","шесть","семь","восемь","девять")
     val listOfBit0 = listOf("","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
     val part = listOf(n/1000,n%1000)
