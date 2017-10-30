@@ -367,7 +367,7 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var string = "" 
+    var string = ""
     val listOfBit1 = listOf("","один","два","три","четыре","пять","шесть","семь","восемь","девять")
     val listOfBit0 = listOf("","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
     val part = listOf(n/1000,n%1000)
@@ -398,13 +398,13 @@ fun russian(n: Int): String {
             dozensOfPart0*10 + unitOfPart0 == 19 -> string += "девятнадцать "
             dozensOfPart0*10 + unitOfPart0 == 10 -> string += "десять "
             dozensOfPart0 in 2..3 -> string += listOfBit1[dozensOfPart0] + "дцать " + listOfBit0[unitOfPart0]
-            dozensOfPart0 == 4 -> string += "сорок " + listOfBit1[unitOfPart0]
+            dozensOfPart0 == 4 -> string += "сорок " + listOfBit0[unitOfPart0]
             dozensOfPart0 in 5..8 -> string += listOfBit1[dozensOfPart0] + "десят " + listOfBit0[unitOfPart0]
             dozensOfPart0 == 9 -> string += "девяносто " + listOfBit0[unitOfPart0]
             else -> string += listOfBit0[unitOfPart0]
         }
         when {
-            dozensOfPart0+unitOfPart0 in 5..20 -> string += "тысяч"
+            dozensOfPart0*10+unitOfPart0 in 5..20 -> string += "тысяч"
             unitOfPart0 == 1 -> string += "тысяча"
             unitOfPart0 in 2..4 -> string += "тысячи"
             else -> string += "тысяч"
@@ -432,7 +432,7 @@ fun russian(n: Int): String {
             dozensOfPart1*10 + unitOfPart1 == 19 -> string += "девятнадцать"
             dozensOfPart1*10 + unitOfPart1 == 10 -> string += "десять"
             dozensOfPart1 in 2..3 -> string += listOfBit1[dozensOfPart1] + "дцать"
-            dozensOfPart1 == 4 -> string += "сорок" + listOfBit1[dozensOfPart1]
+            dozensOfPart1 == 4 -> string += "сорок"
             dozensOfPart1 in 5..8 -> string += listOfBit1[dozensOfPart1] + "десят"
             dozensOfPart1 == 9 -> string += "девяносто"
             else -> string += ""
