@@ -367,6 +367,86 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
+    var string = ""
+    val listOfBit1 = listOf("","один","два","три","четыре","пять","шесть","семь","восемь","девять")
+    val listOfBit0 = listOf("","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
+    val part = listOf(n/1000,n%1000)
+    val unitOfPart0 = part[0]%10
+    val dozensOfPart0 = (part[0]/10)%10
+    val hundredsOfPart0 = part[0]/100
+    val unitOfPart1 = part[1]%10
+    val dozensOfPart1 = (part[1]/10)%10
+    val hundredsOfPart1 = part[1]/100
+    if (part[0] != 0) {
+        when (hundredsOfPart0) {
+            0 -> string += ""
+            1 -> string += "сто "
+            2 -> string += "двести "
+            3 -> string += "триста "
+            4 -> string += "четыреста "
+            else -> string += listOfBit1[hundredsOfPart0] + "сот "
+        }
+        when {
+            dozensOfPart0*10 + unitOfPart0 == 11 -> string += "одиннадцать "
+            dozensOfPart0*10 + unitOfPart0 == 12 -> string += "двенадцать "
+            dozensOfPart0*10 + unitOfPart0 == 13 -> string += "тринадцать "
+            dozensOfPart0*10 + unitOfPart0 == 14 -> string += "четырнадцать "
+            dozensOfPart0*10 + unitOfPart0 == 15 -> string += "пятнадцать "
+            dozensOfPart0*10 + unitOfPart0 == 16 -> string += "шестнадцать "
+            dozensOfPart0*10 + unitOfPart0 == 17 -> string += "семнадцать "
+            dozensOfPart0*10 + unitOfPart0 == 18 -> string += "восемнадцать "
+            dozensOfPart0*10 + unitOfPart0 == 19 -> string += "девятнадцать "
+            dozensOfPart0*10 + unitOfPart0 == 10 -> string += "десять "
+            dozensOfPart0 in 2..3 -> string += listOfBit1[dozensOfPart0] + "дцать " + listOfBit0[unitOfPart0]
+            dozensOfPart0 == 4 -> string += "сорок " + listOfBit1[unitOfPart0]
+            dozensOfPart0 in 5..8 -> string += listOfBit1[dozensOfPart0] + "десят " + listOfBit0[unitOfPart0]
+            dozensOfPart0 == 9 -> string += "девяносто " + listOfBit0[unitOfPart0]
+            else -> string += listOfBit0[unitOfPart0]
+        }
+        when {
+            dozensOfPart0+unitOfPart0 in 5..20 -> string += "тысяч"
+            unitOfPart0 == 1 -> string += "тысяча"
+            unitOfPart0 in 2..4 -> string += "тысячи"
+            else -> string += "тысяч"
+        }
+    }
+    if (part[0] != 0 && part[1] != 0 ) string += " "
+    when (hundredsOfPart1) {
+        0 -> string += ""
+        1 -> string += "сто"
+        2 -> string += "двести"
+        3 -> string += "триста"
+        4 -> string += "четыреста"
+        else -> string += listOfBit1[hundredsOfPart1] + "сот"
+    }
+    if(dozensOfPart1 + unitOfPart1 != 0 && part[1]>99) string += " "
+        when {
+            dozensOfPart1*10 + unitOfPart1 == 11 -> string += "одиннадцать"
+            dozensOfPart1*10 + unitOfPart1 == 12 -> string += "двенадцать"
+            dozensOfPart1*10 + unitOfPart1 == 13 -> string += "тринадцать"
+            dozensOfPart1*10 + unitOfPart1 == 14 -> string += "четырнадцать"
+            dozensOfPart1*10 + unitOfPart1 == 15 -> string += "пятнадцать"
+            dozensOfPart1*10 + unitOfPart1 == 16 -> string += "шестнадцать"
+            dozensOfPart1*10 + unitOfPart1 == 17 -> string += "семнадцать"
+            dozensOfPart1*10 + unitOfPart1 == 18 -> string += "восемнадцать"
+            dozensOfPart1*10 + unitOfPart1 == 19 -> string += "девятнадцать"
+            dozensOfPart1*10 + unitOfPart1 == 10 -> string += "десять"
+            dozensOfPart1 in 2..3 -> string += listOfBit1[dozensOfPart1] + "дцать"
+            dozensOfPart1 == 4 -> string += "сорок" + listOfBit1[dozensOfPart1]
+            dozensOfPart1 in 5..8 -> string += listOfBit1[dozensOfPart1] + "десят"
+            dozensOfPart1 == 9 -> string += "девяносто"
+            else -> string += ""
+    }
+    if (dozensOfPart1 != 1 ) {
+        if (dozensOfPart1 == 0 || part[1] < 10) string += listOfBit1[unitOfPart1]
+        else {
+            if (unitOfPart1 != 0) string += " " + listOfBit1[unitOfPart1]
+        }
+    }
+    return string
+
+}
+/*
     var str = ""
     val list = listOf("","один","два","три","четыре","пять","шесть","семь","восемь","девять")
     val list1 = listOf("","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
@@ -447,3 +527,4 @@ fun russian(n: Int): String {
         }
 return str
 }
+ */
