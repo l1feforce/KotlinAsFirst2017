@@ -378,17 +378,20 @@ fun russian(n: Int): String {
             val n1 = n21%10
             val k3 = list[n3]
             val k2 = list[n2]
-            val k1 =" " + list[n21 % 10]
+            var k1 =" " + list[n21 % 10]
+        if (part[1]%10 == 0 ) k1 = ""
             val k11 = list1[n21 % 10]
+        if (i==1 && part[1] != 0) {
+            if (part[0] != 0 && n3 != 0)  str += " "
             when {
                 n3 == 0 -> str += ""
-                n3 == 1 -> str += "сто "
-                n3 == 2 -> str += "двести "
-                n3 == 3 -> str += "триста "
-                n3 == 4 -> str += "четыреста "
-                else -> str += "$k3" + "сот "
+                n3 == 1 -> str += "сто"
+                n3 == 2 -> str += "двести"
+                n3 == 3 -> str += "триста"
+                n3 == 4 -> str += "четыреста"
+                else -> str += "$k3" + "сот"
             }
-        if (i==1) {
+            if ( n2 != 0 && part[1]>99)  str += " "
             when {
                 n21 == 11 -> str += "одиннадцать"
                 n21 == 12 -> str += "двенадцать"
@@ -404,11 +407,19 @@ fun russian(n: Int): String {
                 n2 == 4 -> str += "сорок" + k1
                 n2 in 5..8 -> str += "$k2" + "десят" + k1
                 n2 == 9 -> str += "девяносто" + k1
-                else -> str += k1
+                else -> if (n<10) str += list[n21 % 10] else str += k1
             }
         }
         if (i==0&&part[i]!=0)
         {
+            when {
+                n3 == 0 -> str += ""
+                n3 == 1 -> str += "сто "
+                n3 == 2 -> str += "двести "
+                n3 == 3 -> str += "триста "
+                n3 == 4 -> str += "четыреста "
+                else -> str += "$k3" + "сот "
+            }
             when {
                 n21 == 11 -> str += "одиннадцать "
                 n21 == 12 -> str += "двенадцать "
@@ -432,7 +443,6 @@ fun russian(n: Int): String {
                 n1 in 2..4 -> str+="тысячи"
                 else -> str+="тысяч"
             }
-            if (part[1]!=0) str+=" "
         }
         }
 return str
