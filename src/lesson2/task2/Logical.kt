@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task2
 
 import lesson1.task1.sqr
@@ -20,9 +21,9 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean {
-    val leftP = number/100
-    val rightP = number%100
-    return (leftP/10+leftP%10)==(rightP/10+rightP%10)
+    val leftP = number / 100
+    val rightP = number % 100
+    return (leftP / 10 + leftP % 10) == (rightP / 10 + rightP % 10)
 }
 
 /**
@@ -33,7 +34,7 @@ fun isNumberHappy(number: Int): Boolean {
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    return x1==x2||y1==y2||abs(x2-x1)==abs(y2-y1)
+    return x1 == x2 || y1 == y2 || abs(x2 - x1) == abs(y2 - y1)
 }
 
 /**
@@ -45,7 +46,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double): Boolean {
-    return (sqrt(sqr(x2-x1) +sqr(y2-y1))+r1<=r2) 
+    return sqrt(sqr(x2 - x1) + sqr(y2 - y1)) + r1 <= r2
 }
 
 /**
@@ -58,11 +59,12 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    val aLessR = a<=r
-    val bLessR = b<=r
-    val cLessR = c<=r
-    val aLessS = a<=s
-    val bLessS = b<=s
-    val cLessS = c<=s
-        return aLessR&&bLessS||bLessR&&aLessS||aLessR&&cLessS||cLessR&&aLessS||bLessR&&cLessS||cLessR&&bLessS
+    val aLessR = a <= r
+    val bLessR = b <= r
+    val cLessR = c <= r
+    val aLessS = a <= s
+    val bLessS = b <= s
+    val cLessS = c <= s
+    return aLessR && bLessS || bLessR && aLessS || aLessR && cLessS ||
+            cLessR && aLessS || bLessR && cLessS || cLessR && bLessS
 }

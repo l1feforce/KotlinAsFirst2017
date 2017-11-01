@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
 
 import lesson1.task1.numberRevert
@@ -37,7 +38,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -66,9 +67,9 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var counter = 1
     var num = n
-    while (abs(num)>9) {
-        counter+=1
-        num/=10
+    while (abs(num) > 9) {
+        counter += 1
+        num /= 10
     }
     return counter
 }
@@ -80,14 +81,13 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    if (n<3) return 1
+    if (n < 3) return 1
     var a1 = 1
     var a2 = 1
     var a3 = 0
     var k = 0
-    for (i in 3..n)
-    {
-        a3=a1+a2
+    for (i in 3..n) {
+        a3 = a1 + a2
         a1 = a2
         a2 = a3
     }
@@ -101,16 +101,16 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-   var max = maxOf(m,n)
-    var min = minOf(m,n)
+    var max = maxOf(m, n)
+    var min = minOf(m, n)
     var t = 0
-    while (max%min!=0) {
+    while (max % min != 0) {
         max %= min
         t = min
         min = max
         max = t
     }
-    return m*n/min
+    return m * n / min
 }
 
 /**
@@ -120,7 +120,7 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var k = 2
-    while (n%k!=0) k+=1
+    while (n % k != 0) k += 1
     return k
 }
 
@@ -130,8 +130,8 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var k = n-1
-    while (n%k!=0) k-=1
+    var k = n - 1
+    while (n % k != 0) k -= 1
     return k
 }
 
@@ -143,9 +143,12 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var k = minOf(m,n)
-    while (!(m%k==0&&n%k==0)) k-=1
-    return (k==1)
+    var k = minOf(m, n).toDouble()
+    for (i in 2..sqrt(k).toInt() + 1) {
+        if (m % i == 0 && n % i == 0) return false
+    }
+    return maxOf(m, n) % minOf(m, n) != 0
+
 }
 
 /**
@@ -158,8 +161,8 @@ fun isCoPrime(m: Int, n: Int): Boolean {
 fun squareBetweenExists(m: Int, n: Int): Boolean { //если в промежутке sqrt(m)..sqrt(n) есть целое число, то есть и квадрат в соот-ем промежутке
     val n1 = n.toDouble()
     val m1 = m.toDouble()
-    return ceil(sqrt(n1))-ceil(sqrt(m1))>=1 ||
-            (sqrt(n1)==sqrt(m1)&&sqrt(n1)==ceil(sqrt(n1)))
+    return ceil(sqrt(n1)) - ceil(sqrt(m1)) >= 1 ||
+            (sqrt(n1) == sqrt(m1) && sqrt(n1) == ceil(sqrt(n1)))
 }
 
 /**
@@ -170,48 +173,51 @@ fun squareBetweenExists(m: Int, n: Int): Boolean { //если в промежу�
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var factorial = 2*3
+    var factorial = 2 * 3
     var k = -1
-    var part = x%(2* PI)
+    var part = x % (2 * PI)
     var t = 3
-    var i = part*part*part
+    var i = part * part * part
     var sum = part
-    while (part>=abs(eps))
-    {
-        part = k*(i/factorial)
-        if (part<abs(eps)) break
-        sum+=part
-        k*=-1
-        i*=part*part
-        t+=1
-        factorial*=t*(t+1)
+    while (part >= abs(eps)) {
+        part = k * (i / factorial)
+        if (part < abs(eps)) break
+        sum += part
+        k *= -1
+        i *= part * part
+        t += 1
+        factorial *= t * (t + 1)
     }
     return sin(sum)
 }
-    /**
-     * Средняя
-     *
-     * Для заданного x рассчитать с заданной точностью eps
-     * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
-     * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
-     */
+
+/**
+ * Средняя
+ *
+ * Для заданного x рассчитать с заданной точностью eps
+ * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
+ * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
+ */
+
 
 fun cos(x: Double, eps: Double): Double {
     var sign = -1
-        val arg = x % (2* PI)
+    val arg = x % (2 * PI)
     var part = x % 2 * PI
     var factorialCount = 2
-    var argDegree = arg*arg
+    var argDegree = arg * arg
     var sum = 1.0
-    while (part>=abs(eps))
-    {
-        part = sign*(argDegree/factorial(factorialCount))
-        if (part<abs(eps)) break
-        sum+=part
-        sign*=-1
-        argDegree*=arg*arg
-        factorialCount+=2
+
+    /*
+    while (part >= abs(eps)) {
+        part = sign * (argDegree / factorial(factorialCount))
+        if (part < abs(eps)) break
+        sum += part
+        sign *= -1
+        argDegree *= arg * arg
+        factorialCount += 2
     }
+    */
     return cos(sum)
 }
 
@@ -225,10 +231,9 @@ fun cos(x: Double, eps: Double): Double {
 fun revert(n: Int): Int {
     var num = n
     var k = 0
-    while (num>0)
-    {
-        k = k * 10 + num%10
-        num/=10
+    while (num > 0) {
+        k = k * 10 + num % 10
+        num /= 10
     }
     return k
 }
@@ -241,7 +246,7 @@ fun revert(n: Int): Int {
  * 15751 -- палиндром, 3653 -- нет.
  */
 fun isPalindrome(n: Int): Boolean {
-    return n==revert(n)
+    return n == revert(n)
 }
 
 /**
@@ -252,21 +257,21 @@ fun isPalindrome(n: Int): Boolean {
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var num = n
-    val id = num%10
+    val id = num % 10
     num /= 10
-    while (num>0) {
-        if (num%10!=id) return true
-        num/=10
+    while (num > 0) {
+        if (num % 10 != id) return true
+        num /= 10
     }
     return false
 }
 
-fun numberLength(n: Int):Int {
-   var num = n
+fun numberLength(n: Int): Int {
+    var num = n
     var t = 0
-    while (num>0) {
-        t+=1
-        num/=10
+    while (num > 0) {
+        t += 1
+        num /= 10
     }
     return t
 }
@@ -281,16 +286,15 @@ fun numberLength(n: Int):Int {
 fun squareSequenceDigit(n: Int): Int {
     var k = 0
     var num = 0
-    while (k<n) {
-        num+=1
-        var numSqr = num*num
-        k+= numberLength(numSqr)
+    while (k < n) {
+        num += 1
+        var numSqr = num * num
+        k += numberLength(numSqr)
     }
-    var numSqr = num*num
-    if (k==n) return numSqr%10 else
-        return (numSqr/pow(10.0, (k-n).toDouble())).toInt()%10
+    var numSqr = num * num
+    if (k == n) return numSqr % 10 else
+        return (numSqr / pow(10.0, (k - n).toDouble())).toInt() % 10
 }
-
 
 
 /**
@@ -303,12 +307,12 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var k = 0
     var num = 0
-    while (k<n) {
-        num+=1
+    while (k < n) {
+        num += 1
         var numFib = fib(num)
-        k+= numberLength(numFib)
+        k += numberLength(numFib)
     }
     var numFib = fib(num)
-    if (k==n) return numFib%10 else
-        return (numFib/pow(10.0, (k-n).toDouble())).toInt()%10
+    if (k == n) return numFib % 10 else
+        return (numFib / pow(10.0, (k - n).toDouble())).toInt() % 10
 }

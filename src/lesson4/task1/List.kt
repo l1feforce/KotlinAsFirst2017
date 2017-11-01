@@ -1,7 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
 import java.lang.Math.pow
 import java.lang.Math.sqrt
 
@@ -109,7 +111,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * Модуль пустого вектора считать равным 0.0.
  */
 fun abs(v: List<Double>): Double {
-    val sqr = v.map {it*it}
+    val sqr = v.map { it * it }
     return sqrt(sqr.sum())
 }
 
@@ -121,7 +123,7 @@ fun abs(v: List<Double>): Double {
 fun mean(list: List<Double>): Double {
     if (list.isEmpty()) return 0.0
     else {
-        return list.sum()/list.size.toDouble()
+        return list.sum() / list.size.toDouble()
     }
 }
 
@@ -135,12 +137,10 @@ fun mean(list: List<Double>): Double {
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty()) return list
-    else
-    {
+    else {
         val mid = mean(list)
-        for (i in 0 until list.size)
-        {
-            list[i]-=mid
+        for (i in 0 until list.size) {
+            list[i] -= mid
         }
     }
     return list
@@ -155,9 +155,9 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     val c = mutableListOf<Double>()
-    for (i in 0..(b.size-1)) {
-            c.add(a[i]*b[i])
-        }
+    for (i in 0..(b.size - 1)) {
+        c.add(a[i] * b[i])
+    }
     return c.sum()
 }
 
@@ -189,13 +189,12 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty() || list.size == 1) return list
     var index = 0
     var sum = -list[1]
-   var listCopy = list.map {
-        sum+=list[(Math.abs(index-1))]
+    var listCopy = list.map {
+        sum += list[(Math.abs(index - 1))]
         index++
-        it+sum
+        it + sum
     }
-    for (i in 0 until list.size)
-    {
+    for (i in 0 until list.size) {
         list[i] = listCopy[i]
     }
     return list
@@ -209,17 +208,15 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-  var number = n
-    var k = 0
+    var number = n
+    var k = 2
     var list = mutableListOf<Int>()
-    while (number!=1)
-    {
-        for (i in 2..number)
-        {
-            if (number%i==0)
-            {number /=i
-            list.add(k , i)
-                k+=1
+    while (number != 1) {
+        for (i in k..n) {
+            if (number % i == 0) {
+                number /= i
+                list.add(i)
+                k = i
                 break
             }
         }
@@ -234,27 +231,36 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
 fun factorizeToString(n: Int): String {
+    var list = factorize(n)
+    if (list.size == 1) return list[0].toString()
+    var s = StringBuilder(list[0].toString() + "*")
+    for (i in 1 until list.size - 1) {
+        s.append(list[i].toString() + "*")
+    }
+    s.append(list[list.size - 1].toString())
+    return s.toString()
+
+    /*
     var number = n
     var i = 1
     var k = 0
     var list = ""
-    while (number!=1)
-    {
-        i+=1
-            if (number%i==0) {
-            number/=i
-                k+=1
-                if (k==1) {
-                    list += "$i"
-                    i = 2
-                }
-                else {
-                    list += "*$i"
-                    i = 2
-                }
+    while (number != 1) {
+        i += 1
+        if (number % i == 0) {
+            number /= i
+            k += 1
+            if (k == 1) {
+                list += "$i"
+                i = 2
+            } else {
+                list += "*$i"
+                i = 2
             }
         }
-return list
+    }
+    return list
+    */
 }
 
 /**
@@ -267,10 +273,9 @@ return list
 fun convert(n: Int, base: Int): List<Int> {
     var list = listOf<Int>()
     var number = n
-    while (number>=base)
-    {
-        list += number%base
-        number/=base
+    while (number >= base) {
+        list += number % base
+        number /= base
     }
     list += number
     return list.asReversed()
@@ -287,7 +292,7 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     var number = n
     var list = ""
-    if (number<base) {
+    if (number < base) {
         if (number >= 10) {
             list += (number + 87).toChar()
             return list
@@ -296,15 +301,14 @@ fun convertToString(n: Int, base: Int): String {
             return list
         }
     }
-    while (number >= base)
-    {
-        if (number%base>=10) list += (number%base+87).toChar()
-        else list += number%base
+    while (number >= base) {
+        if (number % base >= 10) list += (number % base + 87).toChar()
+        else list += number % base
         number /= base
     }
-    if (number>=10) list += (number + 87).toChar()
+    if (number >= 10) list += (number + 87).toChar()
     else
-    list += number
+        list += number
     return list.reversed()
 }
 
@@ -317,9 +321,8 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var sum = 0.0
-    for (i in (digits.size-1) downTo 0)
-    {
-       sum += digits[i]* pow(base.toDouble(),(digits.size-1-i).toDouble())
+    for (i in (digits.size - 1) downTo 0) {
+        sum += digits[i] * pow(base.toDouble(), (digits.size - 1 - i).toDouble())
     }
     return sum.toInt()
 }
@@ -334,16 +337,12 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    var sum= 0.0
-    for (i in 0..(str.length-1))
-    {
-        if (str[i].toInt()<58)
-        {
-           sum += (str[i].toInt()-48)*pow(base.toDouble(),(str.length-1-i).toDouble())
-        }
-        else
-        {
-           sum += (str[i].toInt()-87)*pow(base.toDouble(),(str.length-1-i).toDouble())
+    var sum = 0.0
+    for (i in 0..(str.length - 1)) {
+        if (str[i].toInt() < 58) {
+            sum += (str[i].toInt() - 48) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
+        } else {
+            sum += (str[i].toInt() - 87) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
         }
     }
     return sum.toInt()
@@ -368,76 +367,76 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
     var string = ""
-    val listOfBit1 = listOf("","один","два","три","четыре","пять","шесть","семь","восемь","девять")
-    val listOfBit0 = listOf("","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
-    val part = listOf(n/1000,n%1000)
-    val unitOfPart0 = part[0]%10
-    val dozensOfPart0 = (part[0]/10)%10
-    val hundredsOfPart0 = part[0]/100
-    val unitOfPart1 = part[1]%10
-    val dozensOfPart1 = (part[1]/10)%10
-    val hundredsOfPart1 = part[1]/100
+    val listOfBit1 = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val listOfBit0 = listOf("", "одна ", "две ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять ")
+    val part = listOf(n / 1000, n % 1000)
+    val unitOfPart0 = part[0] % 10
+    val dozensOfPart0 = (part[0] / 10) % 10
+    val hundredsOfPart0 = part[0] / 100
+    val unitOfPart1 = part[1] % 10
+    val dozensOfPart1 = (part[1] / 10) % 10
+    val hundredsOfPart1 = part[1] / 100
     if (part[0] != 0) {
-        when (hundredsOfPart0) {
-            0 -> string += ""
-            1 -> string += "сто "
-            2 -> string += "двести "
-            3 -> string += "триста "
-            4 -> string += "четыреста "
-            else -> string += listOfBit1[hundredsOfPart0] + "сот "
+        string += when (hundredsOfPart0) {
+            0 -> ""
+            1 -> "сто "
+            2 -> "двести "
+            3 -> "триста "
+            4 -> "четыреста "
+            else -> listOfBit1[hundredsOfPart0] + "сот "
         }
-        when {
-            dozensOfPart0*10 + unitOfPart0 == 11 -> string += "одиннадцать "
-            dozensOfPart0*10 + unitOfPart0 == 12 -> string += "двенадцать "
-            dozensOfPart0*10 + unitOfPart0 == 13 -> string += "тринадцать "
-            dozensOfPart0*10 + unitOfPart0 == 14 -> string += "четырнадцать "
-            dozensOfPart0*10 + unitOfPart0 == 15 -> string += "пятнадцать "
-            dozensOfPart0*10 + unitOfPart0 == 16 -> string += "шестнадцать "
-            dozensOfPart0*10 + unitOfPart0 == 17 -> string += "семнадцать "
-            dozensOfPart0*10 + unitOfPart0 == 18 -> string += "восемнадцать "
-            dozensOfPart0*10 + unitOfPart0 == 19 -> string += "девятнадцать "
-            dozensOfPart0*10 + unitOfPart0 == 10 -> string += "десять "
-            dozensOfPart0 in 2..3 -> string += listOfBit1[dozensOfPart0] + "дцать " + listOfBit0[unitOfPart0]
-            dozensOfPart0 == 4 -> string += "сорок " + listOfBit0[unitOfPart0]
-            dozensOfPart0 in 5..8 -> string += listOfBit1[dozensOfPart0] + "десят " + listOfBit0[unitOfPart0]
-            dozensOfPart0 == 9 -> string += "девяносто " + listOfBit0[unitOfPart0]
-            else -> string += listOfBit0[unitOfPart0]
+        string += when {
+            dozensOfPart0 * 10 + unitOfPart0 == 11 -> "одиннадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 12 -> "двенадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 13 -> "тринадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 14 -> "четырнадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 15 -> "пятнадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 16 -> "шестнадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 17 -> "семнадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 18 -> "восемнадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 19 -> "девятнадцать "
+            dozensOfPart0 * 10 + unitOfPart0 == 10 -> "десять "
+            dozensOfPart0 in 2..3 -> listOfBit1[dozensOfPart0] + "дцать " + listOfBit0[unitOfPart0]
+            dozensOfPart0 == 4 -> "сорок " + listOfBit0[unitOfPart0]
+            dozensOfPart0 in 5..8 -> listOfBit1[dozensOfPart0] + "десят " + listOfBit0[unitOfPart0]
+            dozensOfPart0 == 9 -> "девяносто " + listOfBit0[unitOfPart0]
+            else -> listOfBit0[unitOfPart0]
         }
-        when {
-            dozensOfPart0*10+unitOfPart0 in 5..20 -> string += "тысяч"
-            unitOfPart0 == 1 -> string += "тысяча"
-            unitOfPart0 in 2..4 -> string += "тысячи"
-            else -> string += "тысяч"
+        string += when {
+            dozensOfPart0 * 10 + unitOfPart0 in 5..20 -> "тысяч"
+            unitOfPart0 == 1 -> "тысяча"
+            unitOfPart0 in 2..4 -> "тысячи"
+            else -> "тысяч"
         }
     }
-    if (part[0] != 0 && part[1] != 0 ) string += " "
-    when (hundredsOfPart1) {
-        0 -> string += ""
-        1 -> string += "сто"
-        2 -> string += "двести"
-        3 -> string += "триста"
-        4 -> string += "четыреста"
-        else -> string += listOfBit1[hundredsOfPart1] + "сот"
+    if (part[0] != 0 && part[1] != 0) string += " "
+    string += when (hundredsOfPart1) {
+        0 -> ""
+        1 -> "сто"
+        2 -> "двести"
+        3 -> "триста"
+        4 -> "четыреста"
+        else -> listOfBit1[hundredsOfPart1] + "сот"
     }
-    if(dozensOfPart1 + unitOfPart1 != 0 && part[1]>99) string += " "
-        when {
-            dozensOfPart1*10 + unitOfPart1 == 11 -> string += "одиннадцать"
-            dozensOfPart1*10 + unitOfPart1 == 12 -> string += "двенадцать"
-            dozensOfPart1*10 + unitOfPart1 == 13 -> string += "тринадцать"
-            dozensOfPart1*10 + unitOfPart1 == 14 -> string += "четырнадцать"
-            dozensOfPart1*10 + unitOfPart1 == 15 -> string += "пятнадцать"
-            dozensOfPart1*10 + unitOfPart1 == 16 -> string += "шестнадцать"
-            dozensOfPart1*10 + unitOfPart1 == 17 -> string += "семнадцать"
-            dozensOfPart1*10 + unitOfPart1 == 18 -> string += "восемнадцать"
-            dozensOfPart1*10 + unitOfPart1 == 19 -> string += "девятнадцать"
-            dozensOfPart1*10 + unitOfPart1 == 10 -> string += "десять"
-            dozensOfPart1 in 2..3 -> string += listOfBit1[dozensOfPart1] + "дцать"
-            dozensOfPart1 == 4 -> string += "сорок"
-            dozensOfPart1 in 5..8 -> string += listOfBit1[dozensOfPart1] + "десят"
-            dozensOfPart1 == 9 -> string += "девяносто"
-            else -> string += ""
+    if (dozensOfPart1 + unitOfPart1 != 0 && part[1] > 99) string += " "
+    string += when {
+        dozensOfPart1 * 10 + unitOfPart1 == 11 -> "одиннадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 12 -> "двенадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 13 -> "тринадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 14 -> "четырнадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 15 -> "пятнадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 16 -> "шестнадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 17 -> "семнадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 18 -> "восемнадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 19 -> "девятнадцать"
+        dozensOfPart1 * 10 + unitOfPart1 == 10 -> "десять"
+        dozensOfPart1 in 2..3 -> listOfBit1[dozensOfPart1] + "дцать"
+        dozensOfPart1 == 4 -> "сорок"
+        dozensOfPart1 in 5..8 -> listOfBit1[dozensOfPart1] + "десят"
+        dozensOfPart1 == 9 -> "девяносто"
+        else -> ""
     }
-    if (dozensOfPart1 != 1 ) {
+    if (dozensOfPart1 != 1) {
         if (dozensOfPart1 == 0 || part[1] < 10) string += listOfBit1[unitOfPart1]
         else {
             if (unitOfPart1 != 0) string += " " + listOfBit1[unitOfPart1]
