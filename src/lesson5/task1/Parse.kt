@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
 
 /**
@@ -48,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -68,31 +67,24 @@ fun main(args: Array<String>) {
  */
 fun dateStrToDigit(str: String): String {
     val list = str.split(" ")
-    if (list.size!=3) return ""
-    val t = list[1]
+    var counter = 0
+    if (list.size != 3 || list[0] == "" || list[1] == "" || list[2] == "") return ""
+    val listOfMonth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     try {
-        val k = list[0].toInt()
-        var str1 = String.format("%02d", k) + "."
-        when {
-            t == "января" -> str1 += "01"
-            t == "февраля" -> str1 += "02"
-            t == "марта" -> str1 += "03"
-            t == "апреля" -> str1 += "04"
-            t == "мая" -> str1 += "05"
-            t == "июня" -> str1 += "06"
-            t == "июля" -> str1 += "07"
-            t == "августа" -> str1 += "08"
-            t == "сентября" -> str1 += "09"
-            t == "октября" -> str1 += "10"
-            t == "ноября" -> str1 += "11"
-            t == "декабря" -> str1 += "12"
-            else -> return ""
+        var str1 = StringBuilder(String.format("%02d", list[0].toInt()) + ".")
+        for (i in 0..11) {
+            if (list[1] == listOfMonth[i]) {
+                str1.append(String.format("%02d", i + 1))
+                counter++
+                break
+            }
         }
-        str1 += "." + list[2]
-        return str1
+        if (counter == 0) return ""
+        str1.append("." + list[2])
+        return str1.toString()
+    } catch (e: NumberFormatException) {
+        return ""
     }
-    catch (e: NumberFormatException)
-    {return ""}
 }
 
 /**
@@ -104,31 +96,28 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val list = digital.split(".")
-    if (list.size!=3) return ""
-    val t = list[1]
-   try {
-       val k = list[0].toInt() % 100
-       var str1 = k.toString() + " "
-       when {
-           t == "01" -> str1 += "января"
-           t == "02" -> str1 += "февраля"
-           t == "03" -> str1 += "марта"
-           t == "04" -> str1 += "апреля"
-           t == "05" -> str1 += "мая"
-           t == "06" -> str1 += "июня"
-           t == "07" -> str1 += "июля"
-           t == "08" -> str1 += "августа"
-           t == "09" -> str1 += "сентября"
-           t == "10" -> str1 += "октября"
-           t == "11" -> str1 += "ноября"
-           t == "12" -> str1 += "декабря"
-           else -> return ""
-       }
-       str1 += " " + list[2]
-       return str1
-   }
-   catch (e: NumberFormatException)
-   {return ""}
+    if (list.size != 3) return ""
+    val listOfMonth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    try {
+        var str1 = StringBuilder((list[0].toInt() % 100).toString() + " ")
+        str1.append(listOfMonth[list[1].toInt() + 1])
+        str1.append(" " + list[2])
+        return str1.toString()
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+}
+
+fun correctOrNot(list: String, listOfCorrect: String): Boolean {
+    var counter = 0
+    for (i in 0 until list.length) {
+        for (k in 0 until listOfCorrect.length) {
+            if (list[i] == listOfCorrect[k]) counter++
+        }
+        if (counter == 0) return false
+        counter = 0
+    }
+    return true
 }
 
 /**
@@ -144,8 +133,14 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    var list = phone.split("d")
-return "0"
+    var list = phone.split("-", "(", ")", " ")
+    val listOfCorrect = "0123456789()-+ "
+    var number = StringBuilder("")
+    for (i in 0 until list.size) {
+        number.append(list[i])
+    }
+    if (!correctOrNot(number.toString(), listOfCorrect)) return ""
+    return number.toString()
 }
 
 /**
@@ -158,7 +153,23 @@ return "0"
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+
+
+fun bestLongJump(jumps: String): Int {
+    var list = jumps.split(" ", "-", "%")
+    val listOfCorrect = "0123456789"
+    var max = -1
+    var number = StringBuilder("")
+    for (i in 0 until list.size) {
+        number.append(list[i])
+    }
+    if (!correctOrNot(number.toString(), listOfCorrect)) return -1
+    for (i in 0 until list.size) {
+        if (list[i] != "" && list[i].toInt() > max) max = list[i].toInt()
+    }
+    return max
+}
+
 
 /**
  * Сложная
@@ -181,7 +192,22 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+
+fun checkOnCorrection(list: List<String>) {
+    var counter = 0
+    var listOfCorrect = "0123456789-+ "
+    /*for (i in 0 until list.length) {
+        for (k in 0 until listOfCorrect.length) {
+            if (list[i] == listOfCorrect[k]) counter++
+        }
+        if (counter == 0) return false
+        counter = 0
+    }
+    return true
+    */
+}
+
+fun plusMinus(expression: String): List<String> = TODO()
 
 /**
  * Сложная

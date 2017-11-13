@@ -144,7 +144,8 @@ fun maxDivisor(n: Int): Int {
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
     var k = minOf(m, n).toDouble()
-    for (i in 2..sqrt(k).toInt() + 1) {
+    val sqrtOfMin = floor(sqrt(k)).toInt()
+    for (i in 2..sqrtOfMin + 1) {
         if (m % i == 0 && n % i == 0) return false
     }
     return maxOf(m, n) % minOf(m, n) != 0
@@ -173,20 +174,21 @@ fun squareBetweenExists(m: Int, n: Int): Boolean { //если в промежу�
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var factorial = 2 * 3
+    var fac = 2*3
     var k = -1
-    var part = x % (2 * PI)
+    var part = x
     var t = 3
-    var i = part * part * part
+    var i = x*x*x
     var sum = part
-    while (part >= abs(eps)) {
-        part = k * (i / factorial)
-        if (part < abs(eps)) break
-        sum += part
-        k *= -1
-        i *= part * part
-        t += 1
-        factorial *= t * (t + 1)
+    while (part>=abs(eps))
+    {
+        part = k*(i/fac)
+        if (part<abs(eps)) break
+        sum+=part
+        k*=-1
+        i*=x*x
+        t+=1
+        fac*=t*(t+1)
     }
     return sin(sum)
 }
@@ -201,24 +203,7 @@ fun sin(x: Double, eps: Double): Double {
 
 
 fun cos(x: Double, eps: Double): Double {
-    var sign = -1
-    val arg = x % (2 * PI)
-    var part = x % 2 * PI
-    var factorialCount = 2
-    var argDegree = arg * arg
-    var sum = 1.0
-
-    /*
-    while (part >= abs(eps)) {
-        part = sign * (argDegree / factorial(factorialCount))
-        if (part < abs(eps)) break
-        sum += part
-        sign *= -1
-        argDegree *= arg * arg
-        factorialCount += 2
-    }
-    */
-    return cos(sum)
+    if (cos(x)<0) return -sqrt(1-sin(x,eps)*sin(x,eps)) else return sqrt(1-sin(x,eps)*sin(x,eps))
 }
 
 

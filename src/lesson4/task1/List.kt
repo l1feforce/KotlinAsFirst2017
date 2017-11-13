@@ -190,7 +190,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
     var index = 0
     var sum = -list[1]
     var listCopy = list.map {
-        sum += list[(Math.abs(index - 1))]
+        sum += list[(Math.abs(index - 1))] //без указания пакета Math идет обращение к функции abs из этого урока
         index++
         it + sum
     }
@@ -281,6 +281,7 @@ fun convert(n: Int, base: Int): List<Int> {
     return list.asReversed()
 }
 
+fun intToCharUpperCase(n: Int): Char = (n + 87).toChar()
 /**
  * Сложная
  *
@@ -291,25 +292,16 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     var number = n
-    var list = ""
-    if (number < base) {
-        if (number >= 10) {
-            list += (number + 87).toChar()
-            return list
-        } else {
-            list += number
-            return list
-        }
-    }
+    var list = StringBuilder("")
     while (number >= base) {
-        if (number % base >= 10) list += (number % base + 87).toChar()
-        else list += number % base
+        if (number % base >= 10) list.append(intToCharUpperCase(number % base))
+        else list.append(number % base)
         number /= base
     }
-    if (number >= 10) list += (number + 87).toChar()
+    if (number >= 10) list.append(intToCharUpperCase(number))
     else
-        list += number
-    return list.reversed()
+        list.append(number)
+    return list.toString().reversed()
 }
 
 /**
@@ -327,6 +319,10 @@ fun decimal(digits: List<Int>, base: Int): Int {
     return sum.toInt()
 }
 
+fun charToIntUpper(k: Char): Int = k.toInt()-48
+        fun charToIntLower(k: Char): Int = k.toInt()-87
+        fun upperOrLower(k: Char): Boolean = k.toInt() < 58
+
 /**
  * Сложная
  *
@@ -338,11 +334,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     var sum = 0.0
-    for (i in 0..(str.length - 1)) {
-        if (str[i].toInt() < 58) {
-            sum += (str[i].toInt() - 48) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
+    for (i in 0 until str.length ) {
+        if (upperOrLower(str[i])) {
+            sum += (charToIntUpper(str[i])) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
         } else {
-            sum += (str[i].toInt() - 87) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
+            sum += (charToIntLower(str[i])) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
         }
     }
     return sum.toInt()
