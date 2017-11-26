@@ -1,7 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson6.task1
 
 import lesson1.task1.sqr
+import java.lang.Math.*
 
 /**
  * Точка на плоскости
@@ -29,7 +31,8 @@ class Triangle private constructor(private val points: Set<Point>) {
 
     val c: Point get() = pointList[2]
 
-    constructor(a: Point, b: Point, c: Point): this(linkedSetOf(a, b, c))
+    constructor(a: Point, b: Point, c: Point) : this(linkedSetOf(a, b, c))
+
     /**
      * Пример: полупериметр
      */
@@ -72,7 +75,10 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = TODO()
+    fun distance(other: Circle): Double {
+        if (other.center.distance(center) - (other.radius + radius) < 0) return 0.0
+        else return other.center.distance(center) - (other.radius + radius)
+    }
 
     /**
      * Тривиальная
@@ -120,7 +126,7 @@ class Line private constructor(val b: Double, val angle: Double) {
         assert(angle >= 0 && angle < Math.PI) { "Incorrect line angle: $angle" }
     }
 
-    constructor(point: Point, angle: Double): this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
+    constructor(point: Point, angle: Double) : this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
 
     /**
      * Средняя
@@ -128,7 +134,25 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Найти точку пересечения с другой линией.
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
-    fun crossPoint(other: Line): Point = TODO()
+    fun crossPoint(other: Line): Point {
+        var arg = 0.0
+        var ord = 0.0
+        when {
+            angle == PI / 2 -> {
+                arg = -b
+                ord = -b * sin(other.angle) / cos(other.angle) + other.b / cos(other.angle)
+            }
+            other.angle == PI / 2 -> {
+                arg = -other.b
+                ord = -other.b * sin(angle) / cos(angle) + b / cos(angle)
+            }
+            else -> {
+                arg = (other.b / cos(other.angle) - b / cos(angle)) / (tan(angle) - sin(other.angle) / cos(other.angle))
+                ord = (arg * sin(angle) + b) / cos(angle)
+            }
+        }
+        return Point(arg, ord)
+    }
 
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
@@ -160,7 +184,15 @@ fun lineByPoints(a: Point, b: Point): Line = TODO()
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    val xMid = (b.x + a.x) / 2
+    var tan =0.0
+    val yMid = (b.y + a.y) / 2
+   if(a.x == b.x) tan = - PI /2
+    else tan = atan(b.y - a.y / b.x - a.x)
+   return Line(Point(xMid, yMid), tan + PI/2)
+}
+
 
 /**
  * Средняя
@@ -179,7 +211,13 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val AB = bisectorByPoints(a, b)
+    val BC = bisectorByPoints(b, c)
+    val center = AB.crossPoint(BC)
+    val radius = maxOf(a.distance(center), b.distance(center), c.distance(center))
+    return Circle(center, radius)
+}
 
 /**
  * Очень сложная
