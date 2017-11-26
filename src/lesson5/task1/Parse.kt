@@ -71,7 +71,7 @@ fun dateStrToDigit(str: String): String {
     val listOfMonth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     try {
         var str1 = StringBuilder(String.format("%02d", list[0].toInt()) + ".")
-        if (listOfMonth.indexOf(list[1]) != -1) str1.append(String.format("%02d", (listOfMonth.indexOf(list[1]))+1))
+        if (listOfMonth.indexOf(list[1]) != -1) str1.append(String.format("%02d", (listOfMonth.indexOf(list[1])) + 1))
         else return ""
         str1.append("." + list[2])
         return str1.toString()
@@ -186,10 +186,10 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 
-fun checkOnCorrection(list: List<String>) {
+fun checkOnCorrection(list: String): Boolean {
     var counter = 0
     var listOfCorrect = "0123456789-+ "
-    /*for (i in 0 until list.length) {
+    for (i in 0 until list.length) {
         for (k in 0 until listOfCorrect.length) {
             if (list[i] == listOfCorrect[k]) counter++
         }
@@ -197,10 +197,13 @@ fun checkOnCorrection(list: List<String>) {
         counter = 0
     }
     return true
-    */
+
 }
 
-fun plusMinus(expression: String): List<String> = TODO()
+fun plusMinus(expression: String): List<String> {
+    var list = expression.split(" ")
+    return list
+}
 
 /**
  * Сложная
@@ -211,7 +214,18 @@ fun plusMinus(expression: String): List<String> = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val list = str.split(" ")
+    var counter = 0
+    var listCopy = list.toMutableList()
+    listCopy[0] = list[0].toLowerCase()
+    for (i in 1 until list.size) {
+        listCopy[i] = list[i].toLowerCase()
+        if (listCopy[i] == listCopy[i - 1]) return counter
+        counter += list[i - 1].length + 1
+    }
+    return -1
+}
 
 /**
  * Сложная
