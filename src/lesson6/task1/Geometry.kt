@@ -189,7 +189,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
     var tan =0.0
     val yMid = (b.y + a.y) / 2
    if(a.x == b.x) tan = - PI /2
-    else tan = atan(b.y - a.y / b.x - a.x)
+    else tan = atan((b.y - a.y) /( b.x - a.x))
    return Line(Point(xMid, yMid), tan + PI/2)
 }
 
