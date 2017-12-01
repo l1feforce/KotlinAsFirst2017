@@ -67,13 +67,14 @@ fun main(args: Array<String>) {
  */
 fun dateStrToDigit(str: String): String {
     val list = str.split(" ")
-    if (list.size != 3 || list[0] == "" || list[1] == "" || list[2] == "") return ""
-    val listOfMonth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    if (list.size != 3) return ""
+    val listOfMonth = listOf("января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря")
     try {
         var str1 = StringBuilder(String.format("%02d", list[0].toInt()) + ".")
-        if (listOfMonth.indexOf(list[1]) != -1) str1.append(String.format("%02d", (listOfMonth.indexOf(list[1])) + 1))
-        else return ""
-        str1.append("." + list[2])
+        if (listOfMonth.indexOf(list[1]) == -1) return ""
+        else str1.append(String.format("%02d", (listOfMonth.indexOf(list[1])) + 1))
+        str1.append("." + list[2].toInt())
         return str1.toString()
     } catch (e: NumberFormatException) {
         return ""
@@ -89,10 +90,12 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val list = digital.split(".")
-    if (list.size != 3 || list[1].toInt() == 0) return ""
-    val listOfMonth = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val listOfMonth = listOf("января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря")
     try {
-        var str1 = StringBuilder((list[0].toInt() % 100).toString() + " ")
+        if (list.size != 3 || list[0].toInt() !in 1..31
+                || list[1].toInt() !in 1..12) return ""
+        var str1 = StringBuilder((list[0].toInt()).toString() + " ")
         str1.append((listOfMonth[list[1].toInt() - 1]))
         str1.append(" " + list[2])
         return str1.toString()

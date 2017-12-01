@@ -148,6 +148,14 @@ class Tests {
 
     @Test
     @Tag("Normal")
+    fun primes() {
+        assertTrue(primes(71))
+        assertTrue(primes(3571))
+        assertFalse(primes(4))
+    }
+
+    @Test
+    @Tag("Normal")
     fun factorize() {
         assertEquals(listOf(2), factorize(2))
         assertEquals(listOf(3, 5), factorize(15))

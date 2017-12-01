@@ -4,7 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson3.task1.isPrime
-import java.lang.Math.pow
+import java.lang.Math.*
 import java.lang.Math.sqrt
 
 /**
@@ -190,7 +190,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
     var index = 0
     var sum = -list[1]
     var listCopy = list.map {
-        sum += list[(Math.abs(index - 1))] //без указания пакета Math идет обращение к функции abs из этого урока
+        sum += list[(abs(index - 1))]
         index++
         it + sum
     }
@@ -207,22 +207,36 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
+
+fun primes(n: Int): Boolean {
+    for (i in 2 until n) {
+        if (n % i == 0) return false
+    }
+    return true
+}
+
 fun factorize(n: Int): List<Int> {
+    if (primes(n)) return listOf(n)
     var number = n
     var k = 2
+    var nSqrt = ceil(sqrt(n.toDouble())).toInt()
     var list = mutableListOf<Int>()
     while (number != 1) {
-        for (i in k..n) {
+        for (i in k..nSqrt) {
             if (number % i == 0) {
                 number /= i
                 list.add(i)
                 k = i
                 break
+            } else if (i == nSqrt) {
+                list.add(number)
+                number /= number
             }
         }
     }
     return list.sorted()
 }
+
 
 /**
  * Сложная
@@ -239,28 +253,6 @@ fun factorizeToString(n: Int): String {
     }
     s.append(list[list.size - 1].toString())
     return s.toString()
-
-    /*
-    var number = n
-    var i = 1
-    var k = 0
-    var list = ""
-    while (number != 1) {
-        i += 1
-        if (number % i == 0) {
-            number /= i
-            k += 1
-            if (k == 1) {
-                list += "$i"
-                i = 2
-            } else {
-                list += "*$i"
-                i = 2
-            }
-        }
-    }
-    return list
-    */
 }
 
 /**
@@ -319,9 +311,9 @@ fun decimal(digits: List<Int>, base: Int): Int {
     return sum.toInt()
 }
 
-fun charToIntUpper(k: Char): Int = k.toInt()-48
-        fun charToIntLower(k: Char): Int = k.toInt()-87
-        fun upperOrLower(k: Char): Boolean = k.toInt() < 58
+fun charToIntUpper(k: Char): Int = k.toInt() - 48
+fun charToIntLower(k: Char): Int = k.toInt() - 87
+fun upperOrLower(k: Char): Boolean = k.toInt() < 58
 
 /**
  * Сложная
@@ -334,11 +326,11 @@ fun charToIntUpper(k: Char): Int = k.toInt()-48
  */
 fun decimalFromString(str: String, base: Int): Int {
     var sum = 0.0
-    for (i in 0 until str.length ) {
-        if (upperOrLower(str[i])) {
-            sum += (charToIntUpper(str[i])) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
+    for (i in 0 until str.length) {
+        sum += if (upperOrLower(str[i])) {
+            (charToIntUpper(str[i])) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
         } else {
-            sum += (charToIntLower(str[i])) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
+            (charToIntLower(str[i])) * pow(base.toDouble(), (str.length - 1 - i).toDouble())
         }
     }
     return sum.toInt()
@@ -363,8 +355,10 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
     var string = ""
-    val listOfBit1 = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    val listOfBit0 = listOf("", "одна ", "две ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять ")
+    val listOfBit1 = listOf("", "один", "два", "три", "четыре", "пять",
+            "шесть", "семь", "восемь", "девять")
+    val listOfBit0 = listOf("", "одна ", "две ", "три ", "четыре ", "пять ",
+            "шесть ", "семь ", "восемь ", "девять ")
     val part = listOf(n / 1000, n % 1000)
     val unitOfPart0 = part[0] % 10
     val dozensOfPart0 = (part[0] / 10) % 10
@@ -441,85 +435,3 @@ fun russian(n: Int): String {
     return string
 
 }
-/*
-    var str = ""
-    val list = listOf("","один","два","три","четыре","пять","шесть","семь","восемь","девять")
-    val list1 = listOf("","одна ","две ","три ","четыре ","пять ","шесть ","семь ","восемь ","девять ")
-    val part = listOf(n/1000,n%1000)
-    for (i in 0..1) {
-            val n3 = part[i] / 100
-            val n21 = part[i] % 100
-            val n2 = n21 / 10
-            val n1 = n21%10
-            val k3 = list[n3]
-            val k2 = list[n2]
-            var k1 =" " + list[n21 % 10]
-        if (part[1]%10 == 0 ) k1 = ""
-            val k11 = list1[n21 % 10]
-        if (i==1 && part[1] != 0) {
-            if (part[0] != 0 && n3 != 0)  str += " "
-            when {
-                n3 == 0 -> str += ""
-                n3 == 1 -> str += "сто"
-                n3 == 2 -> str += "двести"
-                n3 == 3 -> str += "триста"
-                n3 == 4 -> str += "четыреста"
-                else -> str += "$k3" + "сот"
-            }
-            if ( n2 != 0 && part[1]>99)  str += " "
-            when {
-                n21 == 11 -> str += "одиннадцать"
-                n21 == 12 -> str += "двенадцать"
-                n21 == 13 -> str += "тринадцать"
-                n21 == 14 -> str += "четырнадцать"
-                n21 == 15 -> str += "пятнадцать"
-                n21 == 16 -> str += "шестнадцать"
-                n21 == 17 -> str += "семнадцать"
-                n21 == 18 -> str += "восемнадцать"
-                n21 == 19 -> str += "девятнадцать"
-                n21 == 10 -> str += "десять"
-                n2 in 2..3 -> str += "$k2" + "дцать" + k1
-                n2 == 4 -> str += "сорок" + k1
-                n2 in 5..8 -> str += "$k2" + "десят" + k1
-                n2 == 9 -> str += "девяносто" + k1
-                else -> if (n<10) str += list[n21 % 10] else str += k1
-            }
-        }
-        if (i==0&&part[i]!=0)
-        {
-            when {
-                n3 == 0 -> str += ""
-                n3 == 1 -> str += "сто "
-                n3 == 2 -> str += "двести "
-                n3 == 3 -> str += "триста "
-                n3 == 4 -> str += "четыреста "
-                else -> str += "$k3" + "сот "
-            }
-            when {
-                n21 == 11 -> str += "одиннадцать "
-                n21 == 12 -> str += "двенадцать "
-                n21 == 13 -> str += "тринадцать "
-                n21 == 14 -> str += "четырнадцать "
-                n21 == 15 -> str += "пятнадцать "
-                n21 == 16 -> str += "шестнадцать "
-                n21 == 17 -> str += "семнадцать "
-                n21 == 18 -> str += "восемнадцать "
-                n21 == 19 -> str += "девятнадцать "
-                n21 == 10 -> str += "десять "
-                (n2 in 2..3) -> str += "$k2" + "дцать " + k11
-                n2 == 4 -> str += "сорок " + k11
-                n2 in 5..8 -> str += "$k2" + "десят " + k11
-                n2 == 9 -> str += "девяносто " + k11
-                else -> str += k11
-            }
-            when {
-                n21 in 5..20 -> str+="тысяч"
-                n1 == 1 -> str+="тысяча"
-                n1 in 2..4 -> str+="тысячи"
-                else -> str+="тысяч"
-            }
-        }
-        }
-return str
-}
- */
