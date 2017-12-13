@@ -97,7 +97,7 @@ fun dateDigitToStr(digital: String): String {
                 || list[1].toInt() !in 1..12) return ""
         var str1 = StringBuilder((list[0].toInt()).toString() + " ")
         str1.append((listOfMonth[list[1].toInt() - 1]))
-        str1.append(" " + list[2])
+        str1.append(" " + list[2].toInt())
         return str1.toString()
     } catch (e: NumberFormatException) {
         return ""
@@ -105,13 +105,10 @@ fun dateDigitToStr(digital: String): String {
 }
 
 fun correctOrNot(list: String, listOfCorrect: String): Boolean {
-    var counter = 0
     for (i in 0 until list.length) {
         for (k in 0 until listOfCorrect.length) {
-            if (list[i] == listOfCorrect[k]) counter++
+            if (list[i] !in listOfCorrect) return false
         }
-        if (counter == 0) return false
-        counter = 0
     }
     return true
 }
@@ -130,7 +127,7 @@ fun correctOrNot(list: String, listOfCorrect: String): Boolean {
  */
 fun flattenPhoneNumber(phone: String): String {
     var list = phone.split("-", "(", ")", " ")
-    val listOfCorrect = "0123456789()-+ "
+    val listOfCorrect = "0123456789"
     var number = StringBuilder("")
     for (i in 0 until list.size) {
         number.append(list[i])

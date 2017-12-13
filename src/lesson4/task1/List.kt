@@ -209,7 +209,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  */
 
 fun primes(n: Int): Boolean {
-    for (i in 2 until n) {
+    for (i in 2 until sqrt(n.toDouble()).toInt() + 1) {
         if (n % i == 0) return false
     }
     return true
@@ -283,17 +283,14 @@ fun intToCharUpperCase(n: Int): Char = (n + 87).toChar()
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    var number = n
-    var list = StringBuilder("")
-    while (number >= base) {
-        if (number % base >= 10) list.append(intToCharUpperCase(number % base))
-        else list.append(number % base)
-        number /= base
+    var list = convert(n,base)
+    var str = StringBuilder("")
+    for (i in 0 until list.size)
+    {
+        if (list[i] < 10) str.append(list[i])
+        else str.append(intToCharUpperCase(list[i]))
     }
-    if (number >= 10) list.append(intToCharUpperCase(number))
-    else
-        list.append(number)
-    return list.toString().reversed()
+    return str.toString()
 }
 
 /**
